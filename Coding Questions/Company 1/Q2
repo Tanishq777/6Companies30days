@@ -1,0 +1,29 @@
+Q - Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+Only numbers 1 through 9 are used.
+Each number is used at most once.
+Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+Link - https://leetcode.com/problems/combination-sum-iii/description/
+
+Code - Java
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans = new ArrayList<>();
+        solve(ans,new ArrayList(),k,n,1);
+        return ans;
+    }
+    public void solve(List<List<Integer>> ans,List<Integer> temp, int k,int n,int init)
+    {
+        if (temp.size()==k && n==0)
+        {
+            ans.add(new ArrayList(temp));
+            return;
+        }
+        if (temp.size()>k) return;
+        for(int i=init;i<10;i++)
+        {
+            temp.add(i);
+            solve(ans,temp,k,n-i,i+1);
+            temp.remove(temp.size()-1);
+        }
+    }
+}
