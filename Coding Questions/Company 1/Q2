@@ -27,3 +27,5 @@ class Solution {
         }
     }
 }
+Idea - Just to Generate power set of 1-9 array and check which ever subset satisfies the coditions, store them in answer array
+Topic - Recursion and Backtracking
