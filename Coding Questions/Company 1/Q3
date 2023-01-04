@@ -1,0 +1,54 @@
+Q - You are playing the Bulls and Cows game with your friend.
+You write down a secret number and ask your friend to guess what the number is. When your friend makes a guess, you provide a hint with the following info:
+The number of "bulls", which are digits in the guess that are in the correct position.
+The number of "cows", which are digits in the guess that are in your secret number but are located in the wrong position. Specifically, the non-bull digits in the guess that could be rearranged such that they become bulls.
+Given the secret number secret and your friend's guess guess, return the hint for your friend's guess.
+The hint should be formatted as "xAyB", where x is the number of bulls and y is the number of cows. Note that both secret and guess may contain duplicate digits.
+Link - https://leetcode.com/problems/bulls-and-cows/description/
+
+Code - Java
+class Solution {
+    public void freqChange(HashMap<Integer,Integer> map, int key, int delta)
+    {
+        int freq = map.get(key);
+        map.remove(key);
+        if ((freq+delta) != 0)
+        map.put(key,freq+delta);
+    }
+
+    public String getHint(String secret, String guess) {
+        HashMap<Integer,Integer> mem = new HashMap<>();
+        int n = guess.length();
+        int cow = 0, bull = 0;
+        for(int i=0;i<n;i++)
+        {
+            // for storing secret in mem and finding bulls
+            int s = Integer.valueOf(String.valueOf(secret.charAt(i)));
+            int g = Integer.valueOf(String.valueOf(guess.charAt(i)));
+            if (s == g)
+            bull++;
+            else{
+            if (mem.containsKey(s))
+            freqChange(mem,s,1);
+            else
+            mem.put(s,1);
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            // for Cows
+            int s = Integer.valueOf(String.valueOf(secret.charAt(i)));
+            int g = Integer.valueOf(String.valueOf(guess.charAt(i)));
+            if (s!=g && mem.containsKey(g))
+            {
+                cow++;
+                freqChange(mem,g,-1);
+            }
+        }
+        String ans = String.valueOf(bull) + "A" + String.valueOf(cow) + "B";
+        return ans;
+    }
+}
+Idea - Hashing all secret digits and finding bulls and cows by loop, critical parts is that bull should be find out at hashing time itself otherwise 
+bulls could also be hashed and can be treated as cows because hashing is done for finding cows.
+Topic - HashMap
